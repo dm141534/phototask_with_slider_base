@@ -25,7 +25,7 @@ import com.daimajia.slider.demo.adater.VolleyImageLoader;
 
 public class DetailView extends Activity {
 
-    private static final String TAG = Slider_MainActivity.class.getSimpleName();
+    private static final String TAG = DetailView.class.getSimpleName();
     public final static String  EXTRA_MESSAGE =  "com.christianjandl.phototask.MESSAGE" ;
     // tasks json url
     private static final String url = "http://dm141534.students.fhstp.ac.at/phototask_api/api/tasks/" ;

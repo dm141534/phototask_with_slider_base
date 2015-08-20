@@ -2,92 +2,104 @@ package com.daimajia.slider.demo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.daimajia.slider.demo.model.Picture;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 
-import java.util.HashMap;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class Slider_MainActivity extends Activity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
-    private SliderLayout mDemoSlider;
+    private SliderLayout mySlider;
+    private static final String url = "http://dm141534.students.fhstp.ac.at/phototask_api/api/pics/";
+    private static final String TAG = Slider_MainActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_slider);
-        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
+        mySlider = (SliderLayout)findViewById(R.id.slider);
 
-        HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("1", "http://dm141534.students.fhstp.ac.at/phototask_api/pics/ori/2015/2015--Am-PE-908C.jpg");
-        url_maps.put("2", "http://dm141534.students.fhstp.ac.at/phototask_api/pics/ori/2015/2015-1415257-PE-908C.jpg");
-        url_maps.put("3", "http://dm141534.students.fhstp.ac.at/phototask_api/pics/ori/2015/2015-1415257-PE-908C.png");
-        url_maps.put("4", "http://dm141534.students.fhstp.ac.at/phototask_api/pics/ori/2015/2015-1415257-PE-908C_3.png");
+        //get INtent Extra (ID)
+        Intent i = getIntent();
+        String taskId = i.getStringExtra(DetailView.EXTRA_MESSAGE);
 
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("1",R.drawable.hannibal);
-        file_maps.put("2",R.drawable.bigbang);
-        file_maps.put("3",R.drawable.house);
-        file_maps.put("4", R.drawable.game_of_thrones);
+        // Creating task request by id
+        final String urlWithId = url + taskId;
+       // Log.d(TAG,urlWithId);
 
-
-
-
-        for(String name : url_maps.keySet()){
-            TextSliderView textSliderView = new TextSliderView(this);
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(this);
-
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                        .putString("extra",name);
-
-           mDemoSlider.addSlider(textSliderView);
-        }
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-        mDemoSlider.setDuration(4000);
-        mDemoSlider.addOnPageChangeListener(this);
-        ListView l = (ListView)findViewById(R.id.transformers);
-        l.setAdapter(new TransformerAdapter(this));
-        l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Creating volley request obj
+        JsonArrayRequest picRequest = new JsonArrayRequest(urlWithId, new Response.Listener<JSONArray>() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mDemoSlider.setPresetTransformer(((TextView) view).getText().toString());
-                Toast.makeText(Slider_MainActivity.this, ((TextView) view).getText().toString(), Toast.LENGTH_SHORT).show();
+            public void onResponse(JSONArray response) {
+                // Log.d(TAG, response.toString());
+
+                // Parsing json
+                for (int i = 0; i < response.length(); i++) {
+                    try
+                    {
+                        JSONObject obj = response.getJSONObject(i);
+                        Picture pic = new Picture();
+                        pic.setPic_link("http://dm141534.students.fhstp.ac.at/phototask_api/" + obj.getString("pic_link"));
+
+                        TextSliderView textSliderView = new TextSliderView(getApplicationContext());
+                        textSliderView
+                                .description(pic.getPic_link())
+                                .image(pic.getPic_link())
+                                .setScaleType(BaseSliderView.ScaleType.CenterCrop);
+
+                        //add your extra information
+                        textSliderView.bundle(new Bundle());
+                        textSliderView.getBundle();
+
+                        mySlider.addSlider(textSliderView);
+
+                    }
+                    catch(JSONException e){
+                    e.printStackTrace();
+                }
             }
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            VolleyLog.d(TAG, "Error: " + error.getMessage());
+        }
         });
 
+        /* important adds Request */
+        AppController.getInstance().addToRequestQueue(picRequest);
+        //Slider erstellen
+        mySlider.setPresetTransformer(SliderLayout.Transformer.Default);
+        mySlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Top);
+        mySlider.setCustomAnimation(new DescriptionAnimation());
+        mySlider.setDuration(10000);
+        mySlider.addOnPageChangeListener(this);
 
     }
 
     @Override
     protected void onStop() {
         // To prevent a memory leak on rotation, make sure to call stopAutoCycle() on the slider before activity or fragment is destroyed
-        mDemoSlider.stopAutoCycle();
+        mySlider.stopAutoCycle();
         super.onStop();
     }
 
@@ -105,22 +117,6 @@ public class Slider_MainActivity extends Activity implements BaseSliderView.OnSl
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-          /*  case R.id.action_custom_indicator:
-                mDemoSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
-                break;
-            case R.id.action_custom_child_animation:
-                mDemoSlider.setCustomAnimation(new ChildAnimationExample());
-                break;
-            case R.id.action_restore_default:
-                mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-                mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-                break;
-            case R.id.action_github:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/daimajia/AndroidImageSlider"));
-                startActivity(browserIntent);
-                break;*/
-        }
         return super.onOptionsItemSelected(item);
     }
 
