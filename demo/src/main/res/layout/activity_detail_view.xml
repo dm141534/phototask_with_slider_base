@@ -87,10 +87,10 @@
         android:background="#2ae34f"
         android:text="Kommentar verfassen"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/comments"
-        android:layout_toStartOf="@+id/comments" />
+        android:layout_toRightOf="@+id/send"
+        android:layout_toEndOf="@+id/send"
+        android:layout_marginRight="5dp" />
 
     <Button
         android:layout_width="100dp"
@@ -102,8 +102,29 @@
         android:id="@+id/add_pics"
         android:text="Fotos hinzufügen"
         android:textStyle="bold"
-         />
+        android:clickable="true"
+        android:enabled="true"
+        android:onClick="captureImage" />
+<Button
+    android:layout_width="100dp"
+    android:layout_height="50dp"
+    android:text="Senden"
+    android:background="#2ae34f"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:id="@+id/send"
+    android:layout_marginRight="5dp" />
 
+    <ImageView
+        android:id="@+id/imgPreview"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:visibility="gone"
+        android:layout_below="@+id/detailname"
+        android:layout_above="@+id/add_pics"
+        android:layout_alignRight="@+id/add_pics"
+        android:layout_alignEnd="@+id/add_pics" />
 
 
 </RelativeLayout>
