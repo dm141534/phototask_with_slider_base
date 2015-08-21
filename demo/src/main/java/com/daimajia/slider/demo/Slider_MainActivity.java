@@ -31,7 +31,6 @@ public class Slider_MainActivity extends Activity implements BaseSliderView.OnSl
     private static final String url = "http://dm141534.students.fhstp.ac.at/phototask_api/api/pics/";
     private static final String TAG = Slider_MainActivity.class.getSimpleName();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
