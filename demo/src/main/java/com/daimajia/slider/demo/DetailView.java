@@ -27,8 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.daimajia.slider.demo.R;
-import com.daimajia.slider.demo.AppController;
 import com.daimajia.slider.demo.model.Task;
 import com.daimajia.slider.demo.adater.VolleyImageLoader;
 
@@ -52,11 +50,10 @@ public class DetailView extends Activity {
     //Uri to store image
     private Uri fileUri;
     private ImageView imgPreview;
-    private Button btnCapturePicture, btnRecordVideo;
-
+    private Button btnCapturePicture;
+    private Button btnComments;
 
     Task task = new Task();
-
     //Vorschaubild
     private NetworkImageView mNetworkImageView;
     private ImageLoader mImageLoader;
@@ -71,13 +68,16 @@ public class DetailView extends Activity {
         final TextView name = (TextView) findViewById(R.id.detailname);
         final TextView plate = (TextView) findViewById(R.id.detail_plate);
         final TextView date = (TextView) findViewById(R.id.detail_date);
+        final TextView staff = (TextView) findViewById(R.id.detail_staff);
+        final TextView number = (TextView) findViewById(R.id.detail_number);
 
         imgPreview = (ImageView) findViewById(R.id.imgPreview);
         btnCapturePicture = (Button) findViewById(R.id.add_pics);
+        btnComments = (Button) findViewById(R.id.comments);
         mNetworkImageView = (NetworkImageView) findViewById(R.id.preview_image);
 
         Intent i = getIntent();
-        String taskId = i.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        final String taskId = i.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Log.d(TAG, taskId);
 
         mNetworkImageView.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +87,16 @@ public class DetailView extends Activity {
                 i.putExtra(EXTRA_MESSAGE, task.getId());
                 startActivity(i);
 
+            }
+        });
+
+        btnComments.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+                Log.d(TAG, "Comment-Button clicked");
+                Intent i = new Intent(getApplicationContext(),CommentActivity.class);
+                i.putExtra(EXTRA_MESSAGE,taskId);
+                startActivity(i);
             }
         });
 
@@ -112,7 +122,7 @@ public class DetailView extends Activity {
                                 task.setStaff(response.getString("staff"));
                                 task.setJobnumber(response.getString("jobnumber"));
                                 task.setId(response.getString("id"));
-                                task.setDate(response.getInt("date"));
+                                task.setDate(response.getString("date"));
 
                             // Vorschaubild auslesen und setzen
                             JSONObject previewPic = response.getJSONObject("previewPic");
@@ -123,8 +133,17 @@ public class DetailView extends Activity {
                            showPreview(previewImage);
 
                             name.setText(task.getName());
-                            plate.setText(task.getPlate());
-                            //date.setText(task.getDate());
+                            plate.setText("Kennzeichen:  " + task.getPlate());
+
+                            long dv = Long.valueOf(task.getDate()) * 1000;
+                            Date df = new java.util.Date(dv);
+                            String vv = new SimpleDateFormat("MM dd,yyyy").format(df);
+
+                            date.setText("Datum:  " + vv);
+                            staff.setText("Mitarbeiter: " + task.getStaff());
+                            number.setText("Auftragsnummer: " + task.getJobnumber());
+
+
                             Log.d(TAG, task.getName());
 
                         } catch (JSONException e) {
@@ -167,7 +186,11 @@ public void captureImage(View view){
             if (resultCode == RESULT_OK) {
                 // successfully captured the image
                 // display it in image view
-                previewCapturedImage();
+
+                //wenn Bild auf selber Seite angezeigt werden soll
+                //previewCapturedImage();
+
+                launchUploadActivity(true);
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled Image capture
                 Toast.makeText(getApplicationContext(),
@@ -205,6 +228,13 @@ public void captureImage(View view){
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    private void launchUploadActivity(boolean isImage){
+        Intent i = new Intent(DetailView.this, Upload_Activity.class);
+        i.putExtra("filePath", fileUri.getPath());
+        i.putExtra("isImage", isImage);
+        startActivity(i);
     }
     /**
      * Creating file uri to store image/video

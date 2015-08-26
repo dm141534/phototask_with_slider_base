@@ -38,7 +38,7 @@ import com.daimajia.slider.demo.model.Task;
 import junit.framework.Test;
 
 public class MainActivity extends Activity {
-	// Log tag
+
 	private static final String TAG = MainActivity.class.getSimpleName();
 	public final static String  EXTRA_MESSAGE =  "com.christianjandl.phototask.MESSAGE" ;
 
@@ -47,10 +47,6 @@ public class MainActivity extends Activity {
 	private ProgressDialog pDialog;
 	private List<Task> taskList = new ArrayList<Task>();
 	private ArrayList<Picture> picList = new ArrayList<Picture>();
-
-	public ArrayList<Picture> preview_pics = new ArrayList();
-
- 	private List<Log> logList = new ArrayList<Log>();
 	private ListView listView;
 	private CustomListAdapter adapter;
 
@@ -68,11 +64,6 @@ public class MainActivity extends Activity {
 		pDialog.setMessage("Loading...");
 		pDialog.show();
 
-
-
-		// changing action bar color
-	//getActionBar().setBackgroundDrawable(
-			//	new ColorDrawable(Color.parseColor("#1b1b1b")));
 
 		// Creating volley request obj
 		JsonArrayRequest movieReq = new JsonArrayRequest(url,
@@ -93,7 +84,7 @@ public class MainActivity extends Activity {
 								task.setStaff(obj.getString("staff"));
 								task.setJobnumber(obj.getString("jobnumber"));
 								task.setId(obj.getString("id"));
-								task.setDate(obj.getInt("date"));
+								task.setDate(obj.getString("date"));
 								// Pictures are in  json array
 								JSONArray pictureArray = obj.getJSONArray("pictures");
 								//JSONArray previewArray = obj.getJSONArray("preview_pic");
@@ -154,22 +145,19 @@ public class MainActivity extends Activity {
 
 		// Adding request to request queue
 		AppController.getInstance().addToRequestQueue(movieReq);
+
 		// On Click für Listview
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				long item = adapter.getItemId(position);
-
-				// When clicked, show a toast with the TextView text
 				Task selectedTask = taskList.get(position);
 				//Toast.makeText(getApplicationContext(),"position: " + selectedTask, Toast.LENGTH_LONG).show();
 
-				Toast.makeText(getApplicationContext(),"Ausgewählter Auftrag: " + selectedTask.getId(), Toast.LENGTH_LONG).show();
-
+				Toast.makeText(getApplicationContext(),"Ausgewählter Auftrag: " + selectedTask.getName(), Toast.LENGTH_LONG).show();
 				Intent i = new Intent(getApplicationContext(), DetailView.class);
 				String selectedId = selectedTask.getId();
-
 				i.putExtra(EXTRA_MESSAGE,selectedId);
 				startActivity(i);
 

@@ -10,12 +10,9 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-
 import java.util.List;
-
 import com.daimajia.slider.demo.R;
 import com.daimajia.slider.demo.AppController;
 import com.daimajia.slider.demo.model.Picture;
@@ -41,11 +38,7 @@ public class CustomListAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int location) {
-
-
-
-		return taskItems.get(location);
-	}
+		return taskItems.get(location);}
 
 	@Override
 	public long getItemId(int position) {
@@ -69,7 +62,6 @@ public class CustomListAdapter extends BaseAdapter {
 		TextView name = (TextView) convertView.findViewById(R.id.name);
 		TextView plate = (TextView) convertView.findViewById(R.id.plate);
 		TextView date = (TextView) convertView.findViewById(R.id.date);
-		//TextView staff = (TextView) convertView.findViewById(R.id.staff);
 		TextView jobnumber = (TextView) convertView.findViewById(R.id.jobnumber);
 
 
@@ -80,24 +72,14 @@ public class CustomListAdapter extends BaseAdapter {
 		Picture previewPic = new Picture();
 		previewPic = m.getPreviewpic();
 		String previewLink = new StringBuilder().append("http://dm141534.students.fhstp.ac.at/phototask_api/").append(previewPic.getThumb_link()).toString();
-		Log.d(TAG, previewLink);
-
-
+		//Log.d(TAG, previewLink);
 		thumbNail.setImageUrl(previewLink, imageLoader);
 
-
-		
-		// Name
+		// Set Text in each Row
 		name.setText(m.getName());
-		
-		// plate
 		plate.setText("Kennzeichen: " + String.valueOf(m.getPlate()));
-		
-		// jobnumber
 		jobnumber.setText(String.valueOf(m.getJobnumber()));
 		
-		// release year
-		//staff.setText(String.valueOf(m.getDate()));
 
 		return convertView;
 	}

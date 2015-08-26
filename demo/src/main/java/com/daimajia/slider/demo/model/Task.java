@@ -6,8 +6,7 @@ import com.daimajia.slider.demo.model.Picture;
 
 public class Task {
 
-	private String name, plate, staff, jobnumber, id;
-	private int date;
+	private String name, plate, staff, jobnumber, id,date;
 
 	private ArrayList<Picture> pictures;
 	private ArrayList<Log> logs;
@@ -20,14 +19,13 @@ public class Task {
 
 
 
-	private Task(String name, String plate, String staff, String id, int date, String jobnumber, ArrayList<Picture> pictures, ArrayList<Log>logs, Picture previewpic) {
+	private Task(String name, String plate, String staff, String id, String date, String jobnumber, ArrayList<Picture> pictures, ArrayList<Log>logs, Picture previewpic) {
 		this.name = name;
 		this.plate= plate;
 		this.staff = staff;
 		this.id = id;
 		this.date = date;
 		this.jobnumber = jobnumber;
-
 		this.pictures = pictures;
 		this.logs = logs;
 		this.previewpic = previewpic;
@@ -65,11 +63,11 @@ public class Task {
 		this.staff = staff;
 	}
 
-	public int getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(int date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

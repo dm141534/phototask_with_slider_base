@@ -3,13 +3,13 @@
     package="com.daimajia.slider.demo" >
 
     <application
-        android:name="AppController"
+        android:name=".AppController"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <uses-feature android:name="android.hardware.camera" />
+
         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
         <activity
@@ -21,7 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".DetailView"
             android:label="@string/title_activity_detail_view" >
@@ -30,12 +29,22 @@
             android:name=".Fullscreen_Image_Slider"
             android:label="@string/title_activity_fullscreen__image__slider" >
         </activity>
-
         <activity
             android:name=".Slider_MainActivity"
             android:label="Slider" >
         </activity>
-
+        <activity
+            android:name=".Upload_Activity"
+            android:label="@string/title_activity_upload_" >
+        </activity>
+        <activity
+            android:name=".ViewCommentsActivity"
+            android:label="@string/title_activity_view_comments" >
+        </activity>
+        <activity
+            android:name=".CommentActivity"
+            android:label="@string/title_activity_add_comment" >
+        </activity>
     </application>
 
 </manifest>

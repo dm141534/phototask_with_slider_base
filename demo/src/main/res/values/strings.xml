@@ -8,5 +8,8 @@
     <string name="title_activity_detail_view">DetailView</string>
     <string name="detail_name">No Name</string>
     <string name="title_activity_fullscreen__image__slider">Fullscreen_Image_Slider</string>
+    <string name="title_activity_upload_">Upload_Activity</string>
+    <string name="title_activity_view_comments">ViewCommentsActivity</string>
+    <string name="title_activity_add_comment">AddCommentActivity</string>
 
 </resources>

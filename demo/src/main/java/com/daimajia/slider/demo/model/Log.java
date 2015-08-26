@@ -4,26 +4,18 @@ package com.daimajia.slider.demo.model;
  * Created by christianjandl on 06.07.15.
  *
  *
- * {
- taskId: "81",
- ID: "160",
- message: "jkhjkhkjjkhk",
- by_staff: "Admin",
- date: "1432045349"
-
-
- */
+*/
 public class Log {
 
-    private String message, by_staff;
-    private int taskId, ID, date;
+    private String message, by_staff, date;
+    private int taskId, ID;
 
 
     public Log(){}
 
 
 
-    private Log(String message, String by_staff,  int taskId, int ID, int date) {
+    private Log(String message, String by_staff,  int taskId, int ID, String date) {
         this.message = message;
         this.by_staff= by_staff;
         this. taskId= taskId;
@@ -63,11 +55,11 @@ public class Log {
         this.ID = ID;
     }
 
-    public int getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

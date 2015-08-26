@@ -27,6 +27,9 @@
         android:background="#e3e3e3"
        />
 
+
+
+
     <TextView
         android:id="@+id/detail_plate"
         android:layout_width="match_parent"
@@ -36,6 +39,7 @@
         android:layout_alignParentEnd="true"
         android:paddingTop="15dp"
         android:layout_marginTop="10dp"/>
+
 
     <TextView
         android:id="@+id/detail_number"
