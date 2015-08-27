@@ -1,25 +1,35 @@
 package com.daimajia.slider.demo;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.daimajia.slider.demo.adater.CommentListAdapter;
 import com.daimajia.slider.demo.model.Log;
+import com.daimajia.slider.demo.util.Config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommentActivity extends Activity {
 
@@ -56,12 +66,9 @@ public class CommentActivity extends Activity {
                             try {
                                 JSONObject obj = response.getJSONObject(i);
                                 Log log = new Log();
-
                                 log.setMessage(obj.getString("message"));
                                 log.setBy_staff(obj.getString("by_staff"));
                                 log.setDate(obj.getString("date"));
-
-
                                 // adding task to tasks array
                                 LogList.add(log);
 
@@ -69,9 +76,6 @@ public class CommentActivity extends Activity {
                                 e.printStackTrace();
                             }
                         }
-
-                        // notifying list adapter about data changes
-                        // so that it renders the list view with updated data
                         adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
@@ -88,6 +92,38 @@ public class CommentActivity extends Activity {
 
     }
 
+    public void saveMessageRequest(View view){
+
+        Intent i = getIntent();
+        String taskId = i.getStringExtra(DetailView.EXTRA_MESSAGE);
+
+        EditText message_box = (EditText) findViewById(R.id.edit_text_message);
+        final String new_message = message_box.getText().toString();
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("taskId", taskId);
+        params.put("message", new_message);
+        params.put("user","Admin");
+
+        JsonObjectRequest req = new JsonObjectRequest(Config.POST_MESSAGE_URL, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            VolleyLog.v("Response:%n %s", response.toString(4));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+        AppController.getInstance().addToRequestQueue(req);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -101,12 +137,10 @@ public class CommentActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

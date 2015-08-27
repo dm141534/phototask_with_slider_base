@@ -38,10 +38,6 @@
             android:label="@string/title_activity_upload_" >
         </activity>
         <activity
-            android:name=".ViewCommentsActivity"
-            android:label="@string/title_activity_view_comments" >
-        </activity>
-        <activity
             android:name=".CommentActivity"
             android:label="@string/title_activity_add_comment" >
         </activity>

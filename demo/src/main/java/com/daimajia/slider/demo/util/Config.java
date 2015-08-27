@@ -11,5 +11,7 @@ public class Config {
 
         // Directory name to store captured images and videos
         public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
+
+    public static final String POST_MESSAGE_URL = "http://dm141534.students.fhstp.ac.at/phototask_api/api/logentry";
     }
 
