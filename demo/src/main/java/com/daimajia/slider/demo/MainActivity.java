@@ -90,12 +90,11 @@ public class MainActivity extends Activity {
 
 								// Pictures are in  json array
 								JSONArray pictureArray = obj.getJSONArray("pictures");
-								JSONArray previewArray = obj.getJSONArray("preview_pic");
+								//JSONArray previewArray = obj.getJSONArray("preview_pic");
 
 								// new Object from Picture
 								Picture picture = new Picture();
 								Picture preview_pic = new Picture();
-
 								for (int j = 0; j < pictureArray.length(); j++) {
 
 									// get one object of the array
@@ -106,10 +105,11 @@ public class MainActivity extends Activity {
 									picture.setThumb_link(jsonPic.getString("thumb_link"));
 									picture.setIs_preview(jsonPic.getInt("is_preview"));
 									picture.setPic_date(jsonPic.getInt("pic_date"));
+
 									//Preview Picture
 									if(picture.getIs_preview() == 1){
 										task.setPreviewpic(picture);
-										//Log.d(TAG, "Vorschaubild");
+										Log.d(TAG, "Vorschaubild");
 										//preview_pics.add(preview_pic);
 									}
 									picList.add(j, picture);
