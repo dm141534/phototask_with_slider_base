@@ -3,7 +3,7 @@
 
     <string name="app_name">Phototask-slider</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+
 
     <string name="title_activity_detail_view">DetailView</string>
     <string name="detail_name">No Name</string>
@@ -11,5 +11,20 @@
     <string name="title_activity_upload_">Upload_Activity</string>
     <string name="title_activity_view_comments">ViewCommentsActivity</string>
     <string name="title_activity_add_comment">AddCommentActivity</string>
+
+   <!-- Home-Menue -->
+    <string name="new_contact">Neuer Kontakt</string>
+    <string name="contact_list">Kontakte</string>
+    <string name="user">Benutzer anlegen</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Detail-menue -->
+    <string name="send_task">Senden</string>
+    <string name="message_list">Kommentare</string>
+    <string name="home">Zurück</string>
+    <string name="add_pic">+ Bild</string>
+    <string name="title_activity_contact">ContactActivity</string>
+    <string name="title_activity_new_task">NewTaskActivity</string>
+
 
 </resources>

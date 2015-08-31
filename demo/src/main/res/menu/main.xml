@@ -1,9 +1,34 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_search"
+        android:title="Search"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/search"
+        />
+    <item android:id="@+id/new_task"
+        android:title="Neu"
+        android:showAsAction="ifRoom" />
+
+    <!-- Nur im menu -->
 
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
-
-        android:title="@string/action_settings"/>
+        android:title="@string/action_settings"
+        />
+    <item
+        android:id="@+id/contact_list"
+        android:title="@string/contact_list"
+        />
+    <item
+        android:id="@+id/new_contact"
+        android:title="@string/new_contact"
+        />
+    <item
+        android:id="@+id/user"
+        android:title="@string/user"
+        />
 
 </menu>
