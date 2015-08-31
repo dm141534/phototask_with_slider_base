@@ -1,15 +1,68 @@
-<RelativeLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.daimajia.slider.demo.NewTaskActivity">
+    tools:context="com.daimajia.slider.demo.NewTaskActivity"
+        android:orientation="vertical">
 
 
 
+    <EditText
+    android:id="@+id/new_name"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:singleLine="false"
+    android:hint="Name"/>
 
-</RelativeLayout>
+    <EditText
+        android:id="@+id/new_plate"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:hint="Kennzeichen"/>
+
+    <EditText
+        android:id="@+id/new_jobnumber"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:hint="Auftragsnummer falls bekannt"/>
+
+    <EditText
+        android:id="@+id/new_staff"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:hint="Mitarbeiter"/>
+
+    <EditText
+        android:id="@+id/new_comment"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:hint="Nachricht eingeben"/>
+
+    <Button
+        android:id="@+id/new_task"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Auftrag speichern" />
+
+    <Button
+        android:id="@+id/new_task_add_pics"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Speichern + Bilder hinzufügen" />
+
+    </LinearLayout>
+
+</ScrollView>
+
+

@@ -1,11 +1,12 @@
 package com.daimajia.slider.demo;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class NewTaskActivity extends AppCompatActivity {
+public class NewTaskActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

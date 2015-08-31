@@ -177,14 +177,21 @@ public class MainActivity extends Activity {
 				//openSearch();
 				Log.d(TAG,"Search test");
 				return true;
+
 			case R.id.action_settings:
 				Log.d(TAG,"Settings test");
 				//openSettings();
 				return true;
+
 			case R.id.contact_list:
-				Log.d(TAG,"Kontaktliste");
-				Intent i = new Intent(getApplicationContext(), ContactActivity.class);
-				startActivity(i);
+				Log.d(TAG, "Kontaktliste");
+				Intent i_contact = new Intent(getApplicationContext(), ContactActivity.class);
+				startActivity(i_contact);
+
+			case R.id.new_task:
+				Intent i_new_task = new Intent(getApplicationContext(), NewTaskActivity.class);
+				startActivity(i_new_task);
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}
