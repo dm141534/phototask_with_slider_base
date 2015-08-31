@@ -5,11 +5,11 @@
     <string name="hello_world">Hello world!</string>
 
 
-    <string name="title_activity_detail_view">DetailView</string>
+    <string name="title_activity_detail_view">Detailansicht</string>
     <string name="detail_name">No Name</string>
-    <string name="title_activity_fullscreen__image__slider">Fullscreen_Image_Slider</string>
-    <string name="title_activity_upload_">Upload_Activity</string>
-    <string name="title_activity_view_comments">ViewCommentsActivity</string>
+    <string name="title_activity_fullscreen__image__slider">Gespeicherte Bilder</string>
+    <string name="title_activity_upload_">Bild hinzufügen</string>
+    <string name="title_activity_view_comments">Nachrichten</string>
     <string name="title_activity_add_comment">AddCommentActivity</string>
 
    <!-- Home-Menue -->
@@ -23,8 +23,9 @@
     <string name="message_list">Kommentare</string>
     <string name="home">Zurück</string>
     <string name="add_pic">+ Bild</string>
-    <string name="title_activity_contact">ContactActivity</string>
-    <string name="title_activity_new_task">NewTaskActivity</string>
+
+    <string name="title_activity_contact">Kontaktliste</string>
+    <string name="title_activity_new_task">Neuer Auftrag</string>
 
 
 </resources>

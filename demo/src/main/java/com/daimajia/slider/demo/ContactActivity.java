@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.volley.Response;
@@ -13,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.daimajia.slider.demo.adater.CommentListAdapter;
+import com.daimajia.slider.demo.adater.ContactListAdapter;
 import com.daimajia.slider.demo.model.Contact;
 import com.daimajia.slider.demo.util.Config;
 
@@ -28,18 +30,21 @@ public class ContactActivity extends Activity {
     private static final String TAG = ContactActivity.class.getSimpleName();
     public final static String  EXTRA_MESSAGE =  "com.christianjandl.phototask.MESSAGE" ;
 
-    private ListView listViewContacts;
-    private CommentListAdapter adapter;
-
     private List<Contact> contactList = new ArrayList<Contact>();
     private static final String url = Config.CONTACTS_URL;
 
-
+    private ListView contactListView;
+    private ContactListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+
+        contactListView = (ListView) findViewById(R.id.list_contact);
+        adapter = new ContactListAdapter(this, contactList);
+        contactListView.setAdapter(adapter);
+
 
 
         //Json-Request
@@ -65,7 +70,7 @@ public class ContactActivity extends Activity {
                                 e.printStackTrace();
                             }
                         }
-                        //adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override

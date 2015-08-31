@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.daimajia.slider.demo.R;
 import com.daimajia.slider.demo.model.Log;
-import com.daimajia.slider.demo.model.Task;
-
 import java.util.List;
 
 /**
@@ -19,7 +16,6 @@ import java.util.List;
  */
 public class CommentListAdapter extends BaseAdapter {
 
-    private static final String TAG = CustomListAdapter.class.getSimpleName();
     private Activity activity;
     private LayoutInflater inflater;
     private List<Log> logItems;
@@ -28,8 +24,6 @@ public class CommentListAdapter extends BaseAdapter {
         this.activity = activity;
         this.logItems = logItems;
     }
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -46,17 +40,12 @@ public class CommentListAdapter extends BaseAdapter {
         // getting Task data for the row
         Log m = logItems.get(position);
         // Set Text in each Row
-
-
         message.setText(m.getMessage());
         messageDate.setText("Datum " + String.valueOf(m.getDate()));
         staff.setText(m.getBy_staff());
 
         return convertView;
     }
-
-
-
     @Override
     public int getCount() {
         return logItems.size();
