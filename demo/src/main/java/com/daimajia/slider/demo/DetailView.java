@@ -38,13 +38,13 @@ import java.util.Locale;
 public class DetailView extends Activity {
 
     private static final String TAG = DetailView.class.getSimpleName();
-    public final static String  EXTRA_MESSAGE =  "com.christianjandl.phototask.MESSAGE" ;
     // tasks json url
     private static final String url = "http://dm141534.students.fhstp.ac.at/phototask_api/api/tasks/" ;
     private static final String preview_url = "http://dm141534.students.fhstp.ac.at/phototask_api/";
 
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     public static final int MEDIA_TYPE_IMAGE = 1;
+    public final static String  EXTRA_MESSAGE =  "com.christianjandl.phototask.MESSAGE" ;
     //pictures are stored in folder
     private static final String IMAGE_DIRECTORY_NAME = "Phototask";
     //Uri to store image
@@ -78,7 +78,7 @@ public class DetailView extends Activity {
 
         Intent i = getIntent();
         final String taskId = i.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        Log.d(TAG, taskId);
+        //Log.d(TAG, taskId);
 
         mNetworkImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +93,7 @@ public class DetailView extends Activity {
         btnComments.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
-                Log.d(TAG, "Comment-Button clicked");
+                //Log.d(TAG, "Comment-Button clicked");
                 Intent i = new Intent(getApplicationContext(),CommentActivity.class);
                 i.putExtra(EXTRA_MESSAGE,taskId);
                 startActivity(i);
@@ -128,7 +128,7 @@ public class DetailView extends Activity {
                             JSONObject previewPic = response.getJSONObject("previewPic");
                             String previewImage = preview_url + previewPic.getString("pic_link");
 
-                            Log.d(TAG, previewImage);
+                            //Log.d(TAG, previewImage);
                             // Vorschaubild anzeigen
                            showPreview(previewImage);
 
@@ -144,7 +144,7 @@ public class DetailView extends Activity {
                             number.setText("Auftragsnummer: " + task.getJobnumber());
 
 
-                            Log.d(TAG, task.getName());
+                            //Log.d(TAG, task.getName());
 
                         } catch (JSONException e) {
                                 e.printStackTrace();
@@ -170,7 +170,6 @@ public void captureImage(View view){
 
     fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 
-    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 
     // start the image capture Intent
     startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
@@ -187,8 +186,7 @@ public void captureImage(View view){
                 // successfully captured the image
                 // display it in image view
 
-                //wenn Bild auf selber Seite angezeigt werden soll
-                //previewCapturedImage();
+
 
                 launchUploadActivity(true);
             } else if (resultCode == RESULT_CANCELED) {
@@ -234,6 +232,7 @@ public void captureImage(View view){
         Intent i = new Intent(DetailView.this, Upload_Activity.class);
         i.putExtra("filePath", fileUri.getPath());
         i.putExtra("isImage", isImage);
+      //  i.putExtra("taskId", task.getId());
         startActivity(i);
     }
     /**
