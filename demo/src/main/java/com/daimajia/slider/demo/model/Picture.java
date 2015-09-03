@@ -18,13 +18,13 @@ import java.util.ArrayList;
 
 public class Picture  {
 
- private String pic_link, thumb_link, made_by;
- private int ID, taskId, is_preview, pic_date;
+ private String pic_link, thumb_link, made_by,taskId;
+ private int ID,  is_preview, pic_date;
 
  public Picture(){}
 
 
- private Picture(String pic_link, String thumb_link, String made_by, int ID, int taskId, int is_preview, int pic_date){
+ private Picture(String pic_link, String thumb_link, String made_by, int ID, String taskId, int is_preview, int pic_date){
 
   this.pic_link = pic_link;
   this.thumb_link = thumb_link;
@@ -63,11 +63,11 @@ public class Picture  {
   this.made_by = made_by;
  }
 
- public int getTaskId() {
+ public String getTaskId() {
   return taskId;
  }
 
- public void setTaskId(int taskId) {
+ public void setTaskId(String taskId) {
   this.taskId = taskId;
  }
 

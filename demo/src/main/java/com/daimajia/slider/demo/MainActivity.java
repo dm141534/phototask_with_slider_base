@@ -88,34 +88,15 @@ public class MainActivity extends Activity {
 								task.setId(obj.getString("id"));
 								task.setDate(obj.getString("date"));
 
-								// Pictures are in  json array
-								JSONArray pictureArray = obj.getJSONArray("pictures");
-								//JSONArray previewArray = obj.getJSONArray("preview_pic");
+								JSONObject preview_pic_obj = response.getJSONObject(i).getJSONObject("previewPic");
 
-								// new Object from Picture
-								Picture picture = new Picture();
 								Picture preview_pic = new Picture();
-								for (int j = 0; j < pictureArray.length(); j++) {
+								preview_pic.setThumb_link(preview_pic_obj.getString("thumb_link"));
+								preview_pic.setTaskId(preview_pic_obj.getString("taskId"));
 
-									// get one object of the array
-									JSONObject jsonPic = pictureArray.getJSONObject(j);
+								Log.d(TAG, preview_pic.getThumb_link().toString());
+								task.setPreviewpic(preview_pic);
 
-									picture.setTaskId(jsonPic.getInt("taskId"));
-									picture.setPic_link(jsonPic.getString("pic_link"));
-									picture.setThumb_link(jsonPic.getString("thumb_link"));
-									picture.setIs_preview(jsonPic.getInt("is_preview"));
-									picture.setPic_date(jsonPic.getInt("pic_date"));
-
-									//Preview Picture
-									if(picture.getIs_preview() == 1){
-										task.setPreviewpic(picture);
-										Log.d(TAG, "Vorschaubild");
-										//preview_pics.add(preview_pic);
-									}
-									picList.add(j, picture);
-								}
-								task.setPictures(picList);
-								// adding task to tasks array
 								taskList.add(task);
 
 							} catch (JSONException e) {

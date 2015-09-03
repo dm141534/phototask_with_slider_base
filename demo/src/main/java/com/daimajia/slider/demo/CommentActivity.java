@@ -73,10 +73,10 @@ public class CommentActivity extends Activity {
                                           int count, int after) {
             }
 
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                TextView myOutputBox = (TextView) findViewById(R.id.myOutputBox);
-                myOutputBox.setText(s);
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                //TextView myOutputBox = (TextView) findViewById(R.id.myOutputBox);
+               // myOutputBox.setText(s);
             }
         });
 
