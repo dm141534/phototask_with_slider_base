@@ -48,6 +48,8 @@ public class NewTaskActivity extends Activity {
     public void saveNewTaskRequest(View view){
         LinearLayout newTaskLayout;
         newTaskLayout = (LinearLayout)findViewById(R.id.new_task_layout);
+        //Intent i = getIntent();
+        //String taskId = i.getStringExtra(DetailView.EXTRA_MESSAGE);
 
         EditText newName = (EditText) findViewById(R.id.new_name);
         EditText newPlate = (EditText) findViewById(R.id.new_plate);
@@ -93,17 +95,28 @@ public class NewTaskActivity extends Activity {
         Log.d(TAG, "POST send !");
         AppController.getInstance().addToRequestQueue(req);
         //Toast
-        Toast.makeText(NewTaskActivity.this, "Auftrag: " + new_name + "  wurde erstellt!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(NewTaskActivity.this, "Auftrag" + new_name +"wurde erstellt!", Toast.LENGTH_SHORT).show();
     }
+
+
+
+
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }
