@@ -49,6 +49,7 @@ public class DetailView extends Activity {
     private static final String IMAGE_DIRECTORY_NAME = "Phototask";
     //Uri to store image
     private Uri fileUri;
+    private String taskId;
     private ImageView imgPreview;
     private Button btnCapturePicture;
     private Button btnComments;
@@ -169,8 +170,11 @@ public void captureImage(View view){
     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
     fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-
-
+    taskId = task.getId();
+    Log.d(TAG,taskId);
+    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+    //ein Versuch
+    intent.putExtra(EXTRA_MESSAGE, taskId);
     // start the image capture Intent
     startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
 

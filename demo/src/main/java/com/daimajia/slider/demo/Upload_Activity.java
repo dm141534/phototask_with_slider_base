@@ -38,9 +38,8 @@ import java.io.IOException;
 import com.daimajia.slider.demo.util.AndroidMultiPartEntity.ProgressListener;
 
 public class Upload_Activity extends Activity {
-    // LogCat tag
-    private static final String TAG = MainActivity.class.getSimpleName();
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private ProgressBar progressBar;
     private String filePath = null;
     private TextView txtPercentage;
@@ -170,8 +169,7 @@ public class Upload_Activity extends Activity {
                 entity.addPart("image", new FileBody(sourceFile));
 
                 // Extra parameters if you want to pass to server
-                entity.addPart("website",
-                        new StringBody("www.androidhive.info"));
+                entity.addPart("taskId", new StringBody("91"));
                 entity.addPart("email", new StringBody("abc@gmail.com"));
 
                 totalSize = entity.getContentLength();
