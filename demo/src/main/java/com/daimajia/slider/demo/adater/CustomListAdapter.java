@@ -68,6 +68,7 @@ public class CustomListAdapter extends BaseAdapter {
 		// getting Task data for the row
 		Task m = taskItems.get(position);
 
+
 		// thumbnail image Object:
 		Picture previewPic = new Picture();
 		previewPic = m.getPreviewpic();

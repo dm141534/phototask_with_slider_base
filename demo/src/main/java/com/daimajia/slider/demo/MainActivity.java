@@ -173,6 +173,10 @@ public class MainActivity extends Activity {
 				Intent i_new_task = new Intent(getApplicationContext(), NewTaskActivity.class);
 				startActivity(i_new_task);
 
+			case R.id.new_contact:
+				Intent i_new_contact = new Intent(getApplicationContext(), NewContactActivity.class);
+				startActivity(i_new_contact);
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}

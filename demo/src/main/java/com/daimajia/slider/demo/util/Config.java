@@ -15,5 +15,6 @@ public class Config {
     public static final String POST_MESSAGE_URL = "http://dm141534.students.fhstp.ac.at/phototask_api/api/logentry";
     public static final String CONTACTS_URL = "http://dm141534.students.fhstp.ac.at/phototask_api/api/contacts";
     public static final String POST_NEW_TASK_URL = "http://dm141534.students.fhstp.ac.at/phototask_api/api/newtask";
+    public static final String POST_NEW_CONTACT_URL = "http://dm141534.students.fhstp.ac.at/phototask_api/api/newcontact";
     }
 

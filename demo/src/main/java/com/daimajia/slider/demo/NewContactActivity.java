@@ -2,7 +2,6 @@ package com.daimajia.slider.demo;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -26,47 +24,35 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class NewTaskActivity extends Activity {
+public class NewContactActivity extends Activity {
 
-    private static final String TAG = NewTaskActivity.class.getSimpleName();
+    private static final String TAG = NewContactActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_task);
-
+        setContentView(R.layout.activity_new_contact);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_task, menu);
-        return true;
-
-    }
-
-    public void saveNewTaskRequest(View view){
+    public void saveNewContactRequest(View view){
         LinearLayout newTaskLayout;
-        newTaskLayout = (LinearLayout)findViewById(R.id.new_task_layout);
+        newTaskLayout = (LinearLayout)findViewById(R.id.new_contact_layout);
 
-        EditText newName = (EditText) findViewById(R.id.new_name);
-        EditText newPlate = (EditText) findViewById(R.id.new_plate);
-        EditText newJobNumber = (EditText) findViewById(R.id.new_jobnumber);
-        EditText newStaff = (EditText) findViewById(R.id.new_staff);
-        EditText newMessage = (EditText) findViewById(R.id.new_comment);
+        EditText newSecondName = (EditText) findViewById(R.id.new_secondname);
+        EditText newFirstName = (EditText) findViewById(R.id.new_firstname);
+        EditText newEmail = (EditText) findViewById(R.id.new_email);
+        EditText newCompany = (EditText) findViewById(R.id.new_company);
 
-        final String new_name = newName.getText().toString();
-        final String new_plate = newPlate.getText().toString();
-        final String new_jobnumber = newJobNumber.getText().toString();
-        final String new_staff = newStaff.getText().toString();
-        final String new_message = newMessage.getText().toString();
+        final String new_secondname = newSecondName.getText().toString();
+        final String new_firstname = newFirstName.getText().toString();
+        final String new_email = newEmail.getText().toString();
+        final String new_company = newCompany.getText().toString();
 
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("name", new_name);
-        params.put("plate",new_plate);
-        params.put("staff", new_staff);
-        params.put("logmessage", new_message);
-        params.put("jobnumber", new_jobnumber);
+        params.put("secondname", new_secondname);
+        params.put("firstname",new_firstname);
+        params.put("emailAddress", new_email);
+        params.put("company", new_company);
 
         Log.d(TAG, params.toString());
 
@@ -74,7 +60,7 @@ public class NewTaskActivity extends Activity {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(newTaskLayout.getWindowToken(), 0);
 
-        JsonObjectRequest req = new JsonObjectRequest(Config.POST_NEW_TASK_URL, new JSONObject(params),
+        JsonObjectRequest req = new JsonObjectRequest(Config.POST_NEW_CONTACT_URL, new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -93,17 +79,24 @@ public class NewTaskActivity extends Activity {
         Log.d(TAG, "POST send !");
         AppController.getInstance().addToRequestQueue(req);
         //Toast
-        Toast.makeText(NewTaskActivity.this, "Auftrag: " + new_name + "  wurde erstellt!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(NewContactActivity.this, "Neuer Kontakt " + new_secondname + " wurde erstellt!", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_new_contact, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }
