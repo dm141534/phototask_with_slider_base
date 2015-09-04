@@ -155,7 +155,7 @@ public class NewTaskActivity extends Activity {
 
                         try {
                             //Task ID wird zurückgegeben
-                            Toast.makeText(NewTaskActivity.this, "Auftrag" + new_name +"wurde erstellt!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewTaskActivity.this, "Auftrag" + new_name +"wurde erstellt!", Toast.LENGTH_LONG).show();
                             String taskId =  response.getString("id");
                             Intent i = new Intent(getApplicationContext(),DetailView.class);
                             i.putExtra(EXTRA_MESSAGE,taskId);

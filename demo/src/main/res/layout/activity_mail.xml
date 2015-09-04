@@ -1,0 +1,40 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.daimajia.slider.demo.Mail_Activity"
+    android:orientation="vertical"
+    >
+
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="40dp"
+       android:text="Fotos auswählen: "
+       android:textSize="20dp"
+       android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/email_about"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:hint="Betreff"
+        android:layout_gravity="center_vertical" />
+
+    <EditText
+        android:id="@+id/email_address"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:hint="Emailaddresse" />
+
+
+    <EditText
+        android:id="@+id/email_messsage"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:hint="Nachricht eingeben"/>
+
+
+
+
+</LinearLayout>

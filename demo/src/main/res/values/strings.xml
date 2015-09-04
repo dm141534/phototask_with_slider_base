@@ -26,6 +26,7 @@
 
     <string name="title_activity_contact">Kontaktliste</string>
     <string name="title_activity_new_task">Neuen Auftrag anlegen</string>
+    <string name="title_activity_mail_">Mail_Activity</string>
 
 
 </resources>
