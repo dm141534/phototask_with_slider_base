@@ -141,7 +141,7 @@ public class Upload_Activity extends Activity {
 
             Intent i = getIntent();
             String taskId = i.getStringExtra("taskId");
-            Log.d(TAG, "hat lang gedauert, aber jetz" + taskId);
+            //Log.d(TAG, "hat lang gedauert, aber jetz" + taskId);
 
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(

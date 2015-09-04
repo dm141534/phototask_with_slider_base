@@ -29,6 +29,7 @@ import java.util.HashMap;
 public class NewTaskActivity extends Activity {
 
     private static final String TAG = NewTaskActivity.class.getSimpleName();
+    public final static String  EXTRA_MESSAGE =  "com.christianjandl.phototask.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +47,9 @@ public class NewTaskActivity extends Activity {
     }
 
     public void saveNewTaskRequest(View view){
+
         LinearLayout newTaskLayout;
         newTaskLayout = (LinearLayout)findViewById(R.id.new_task_layout);
-        //Intent i = getIntent();
-        //String taskId = i.getStringExtra(DetailView.EXTRA_MESSAGE);
 
         EditText newName = (EditText) findViewById(R.id.new_name);
         EditText newPlate = (EditText) findViewById(R.id.new_plate);
@@ -70,7 +70,8 @@ public class NewTaskActivity extends Activity {
         params.put("logmessage", new_message);
         params.put("jobnumber", new_jobnumber);
 
-        Log.d(TAG, params.toString());
+
+
 
         //Keyboard appears only if on Focus
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -78,32 +79,111 @@ public class NewTaskActivity extends Activity {
 
         JsonObjectRequest req = new JsonObjectRequest(Config.POST_NEW_TASK_URL, new JSONObject(params),
                 new Response.Listener<JSONObject>() {
+
+
+
                     @Override
                     public void onResponse(JSONObject response) {
+
+                        try {
+                            //Task ID wird zurückgegeben
+                            Toast.makeText(NewTaskActivity.this, "Auftrag" + new_name +"wurde erstellt!", Toast.LENGTH_SHORT).show();
+                           String taskId =  response.getString("id");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         try {
                             VolleyLog.v("Response:%n %s", response.toString(4));
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
             }
         });
-        Log.d(TAG, "POST send !");
+
         AppController.getInstance().addToRequestQueue(req);
-        //Toast
-        Toast.makeText(NewTaskActivity.this, "Auftrag" + new_name +"wurde erstellt!", Toast.LENGTH_SHORT).show();
+
     }
 
+    public void saveNewTaskRequestWithPicture(View view){
+
+        LinearLayout newTaskLayout;
+        newTaskLayout = (LinearLayout)findViewById(R.id.new_task_layout);
+
+        EditText newName = (EditText) findViewById(R.id.new_name);
+        EditText newPlate = (EditText) findViewById(R.id.new_plate);
+        EditText newJobNumber = (EditText) findViewById(R.id.new_jobnumber);
+        EditText newStaff = (EditText) findViewById(R.id.new_staff);
+        EditText newMessage = (EditText) findViewById(R.id.new_comment);
+
+        final String new_name = newName.getText().toString();
+        final String new_plate = newPlate.getText().toString();
+        final String new_jobnumber = newJobNumber.getText().toString();
+        final String new_staff = newStaff.getText().toString();
+        final String new_message = newMessage.getText().toString();
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("name", new_name);
+        params.put("plate",new_plate);
+        params.put("staff", new_staff);
+        params.put("logmessage", new_message);
+        params.put("jobnumber", new_jobnumber);
 
 
 
 
+        //Keyboard appears only if on Focus
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(newTaskLayout.getWindowToken(), 0);
+
+        JsonObjectRequest req = new JsonObjectRequest(Config.POST_NEW_TASK_URL, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
 
 
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            //Task ID wird zurückgegeben
+                            Toast.makeText(NewTaskActivity.this, "Auftrag" + new_name +"wurde erstellt!", Toast.LENGTH_SHORT).show();
+                            String taskId =  response.getString("id");
+                            Intent i = new Intent(getApplicationContext(),DetailView.class);
+                            i.putExtra(EXTRA_MESSAGE,taskId);
+                            startActivity(i);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            VolleyLog.v("Response:%n %s", response.toString(4));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(req);
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -89,11 +89,8 @@ public class MainActivity extends Activity {
 								task.setDate(obj.getString("date"));
 
 								JSONObject preview_pic_obj = response.getJSONObject(i).getJSONObject("previewPic");
-
 								Picture preview_pic = new Picture();
 								preview_pic.setThumb_link(preview_pic_obj.getString("thumb_link"));
-								preview_pic.setTaskId(preview_pic_obj.getString("taskId"));
-
 								Log.d(TAG, preview_pic.getThumb_link().toString());
 								task.setPreviewpic(preview_pic);
 

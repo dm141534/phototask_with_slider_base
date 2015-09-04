@@ -94,7 +94,6 @@ public class DetailView extends Activity {
         btnComments.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
-                //Log.d(TAG, "Comment-Button clicked");
                 Intent i = new Intent(getApplicationContext(),CommentActivity.class);
                 i.putExtra(EXTRA_MESSAGE,taskId);
                 startActivity(i);

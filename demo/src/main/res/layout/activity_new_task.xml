@@ -24,42 +24,43 @@
                 android:singleLine="false"
                 android:hint="Name"/>
 
-                <EditText
-                    android:id="@+id/new_plate"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:hint="Kennzeichen"/>
+                        <EditText
+            android:id="@+id/new_plate"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:hint="Kennzeichen"/>
 
-                <EditText
-                    android:id="@+id/new_jobnumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:hint="Auftragsnummer falls bekannt"/>
+        <EditText
+            android:id="@+id/new_jobnumber"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:hint="Auftragsnummer falls bekannt"/>
 
-                <EditText
-                    android:id="@+id/new_staff"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:hint="Mitarbeiter"/>
+        <EditText
+            android:id="@+id/new_staff"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:hint="Mitarbeiter"/>
 
-                <EditText
-                    android:id="@+id/new_comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:hint="Nachricht eingeben"/>
+        <EditText
+            android:id="@+id/new_comment"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="Nachricht eingeben"/>
 
-                <Button
-                    android:id="@+id/new_task"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Auftrag speichern"
-                    android:onClick="saveNewTaskRequest" />
+        <Button
+            android:id="@+id/new_task"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Auftrag speichern"
+            android:onClick="saveNewTaskRequest" />
 
                 <Button
                     android:id="@+id/new_task_add_pics"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Speichern + Bilder hinzufügen" />
+                    android:text="Speichern + Bilder hinzufügen"
+                    android:onClick="saveNewTaskRequestWithPicture"/>
 
     </LinearLayout>
 
