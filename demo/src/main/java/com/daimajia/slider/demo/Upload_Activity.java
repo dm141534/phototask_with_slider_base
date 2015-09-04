@@ -36,10 +36,9 @@ import java.io.File;
 import java.io.IOException;
 
 import com.daimajia.slider.demo.util.AndroidMultiPartEntity.ProgressListener;
-
 public class Upload_Activity extends Activity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = Upload_Activity.class.getSimpleName();
     private ProgressBar progressBar;
     private String filePath = null;
     private TextView txtPercentage;
@@ -58,20 +57,13 @@ public class Upload_Activity extends Activity {
         imgPreview = (ImageView) findViewById(R.id.imgPreview);
         vidPreview = (VideoView) findViewById(R.id.videoPreview);
 
-        // Changing action bar background color
-   /*     getActionBar().setBackgroundDrawable(
-                new ColorDrawable(Color.parseColor(getResources().getString(
-                        R.color.action_bar))));*/
-
         // Receiving the data from previous activity
         Intent i = getIntent();
-
         // image or video path that is captured in previous activity
         filePath = i.getStringExtra("filePath");
-
         // boolean flag to identify the media type, image or video
         boolean isImage = i.getBooleanExtra("isImage", true);
-
+       // String taskId = i.getStringExtra("taskId");
         if (filePath != null) {
             // Displaying the image or video on the screen
             previewMedia(isImage);
@@ -79,9 +71,7 @@ public class Upload_Activity extends Activity {
             Toast.makeText(getApplicationContext(),
                     "Sorry, file path is missing!", Toast.LENGTH_LONG).show();
         }
-
         btnUpload.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 // uploading the file to server
@@ -90,11 +80,10 @@ public class Upload_Activity extends Activity {
         });
 
     }
-
     /**
      * Displaying captured image/video on the screen
      * */
-    private void previewMedia(boolean isImage) {
+   private void previewMedia(boolean isImage) {
         // Checking whether captured media is image or video
         if (isImage) {
             imgPreview.setVisibility(View.VISIBLE);
@@ -117,7 +106,6 @@ public class Upload_Activity extends Activity {
             vidPreview.start();
         }
     }
-
     /**
      * Uploading the file to server
      * */
@@ -133,10 +121,8 @@ public class Upload_Activity extends Activity {
         protected void onProgressUpdate(Integer... progress) {
             // Making progress bar visible
             progressBar.setVisibility(View.VISIBLE);
-
             // updating progress bar value
             progressBar.setProgress(progress[0]);
-
             // updating percentage value
             txtPercentage.setText(String.valueOf(progress[0]) + "%");
         }
@@ -151,7 +137,11 @@ public class Upload_Activity extends Activity {
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
+            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_TABLE_URL);
+
+            Intent i = getIntent();
+            String taskId = i.getStringExtra("taskId");
+            Log.d(TAG, "hat lang gedauert, aber jetz" + taskId);
 
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -169,8 +159,8 @@ public class Upload_Activity extends Activity {
                 entity.addPart("image", new FileBody(sourceFile));
 
                 // Extra parameters if you want to pass to server
-                entity.addPart("taskId", new StringBody("91"));
-                entity.addPart("email", new StringBody("abc@gmail.com"));
+                entity.addPart("taskid", new StringBody(taskId));
+               // entity.addPart("email", new StringBody("abc@gmail.com"));
 
                 totalSize = entity.getContentLength();
                 httppost.setEntity(entity);
@@ -209,7 +199,6 @@ public class Upload_Activity extends Activity {
         }
 
     }
-
     /**
      * Method to show alert dialog
      * */

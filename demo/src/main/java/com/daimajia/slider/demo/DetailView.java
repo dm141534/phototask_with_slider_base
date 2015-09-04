@@ -170,11 +170,9 @@ public void captureImage(View view){
     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
     fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-    taskId = task.getId();
-    Log.d(TAG,taskId);
     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
     //ein Versuch
-    intent.putExtra(EXTRA_MESSAGE, taskId);
+    intent.putExtra(EXTRA_MESSAGE, task.getId());
     // start the image capture Intent
     startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
 
@@ -236,7 +234,7 @@ public void captureImage(View view){
         Intent i = new Intent(DetailView.this, Upload_Activity.class);
         i.putExtra("filePath", fileUri.getPath());
         i.putExtra("isImage", isImage);
-      //  i.putExtra("taskId", task.getId());
+        i.putExtra("taskId", task.getId());
         startActivity(i);
     }
     /**
