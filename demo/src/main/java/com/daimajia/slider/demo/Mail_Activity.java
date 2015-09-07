@@ -2,40 +2,36 @@ package com.daimajia.slider.demo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.Volley;
 import com.daimajia.slider.demo.adater.MyVolleySingleton;
-import com.daimajia.slider.demo.model.ImageUrlArray;
+import com.daimajia.slider.demo.model.Contact;
 import com.daimajia.slider.demo.model.Picture;
 import com.daimajia.slider.demo.util.Config;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Mail_Activity extends Activity {
@@ -44,18 +40,18 @@ public class Mail_Activity extends Activity {
     NetworkImageView myNetworkImageView;
     private static final String TAG = Mail_Activity.class.getSimpleName();
     private ArrayList<String> Thumblink_Array = new ArrayList<String>();
-    String url_pics = Config.PICS_BY_ID_URL;
+    private ArrayList<Contact> contactList = new ArrayList<Contact>();
+    ArrayList<String> nameList = new ArrayList<String>();
 
+    String url_pics = Config.PICS_BY_ID_URL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mail);
 
         myImageLoader = MyVolleySingleton.getInstance(this).getImageLoader();
-
             final GridView gridView = (GridView) findViewById(R.id.gridView);
             gridView.setAdapter(new MyImageAdapter());
-
 
         //JSON REQUEST for PICS ARRAY
         Intent i = getIntent();
@@ -75,7 +71,7 @@ public class Mail_Activity extends Activity {
                         //THUMBLINK fehlt noch in API
                         //pic.setThumb_link("http://dm141534.students.fhstp.ac.at/phototask_api/" + obj.getString("thumb_link"));
                         pic.setPic_link("http://dm141534.students.fhstp.ac.at/phototask_api/" + obj.getString("pic_link"));
-                        Log.d(TAG, response.toString());
+                        //Log.d(TAG, pic.getPic_link());
                         Thumblink_Array.add(pic.getPic_link());
                     }
                     catch(JSONException e){
@@ -91,7 +87,55 @@ public class Mail_Activity extends Activity {
         });
 
         AppController.getInstance().addToRequestQueue(picRequest);
-        //Log.d(TAG, Thumblink_Array.toString());
+
+        JsonArrayRequest contactRequest = new JsonArrayRequest(Config.CONTACTS_URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++) {
+                    try
+                    {
+                        JSONObject obj = response.getJSONObject(i);
+                        Contact con = new Contact();
+                        con.setSecondname(obj.getString("secondname"));
+                        con.setFirstname(obj.getString("firstname"));
+                        con.setCompany(obj.getString("company"));
+                        con.setEmailAddress(obj.getString("emailAddress"));
+                        contactList.add(con);
+                        nameList.add(con.getSecondname() + "  " + con.getFirstname());
+                        //Log.d(TAG, con.getSecondname());
+                    }
+                    catch(JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+        AppController.getInstance().addToRequestQueue(contactRequest);
+        //SPINNNER
+        Spinner contactSpinner = (Spinner) findViewById(R.id.address_spinner);
+        contactSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, nameList));
+
+        //Spinner onitemclclicked
+       contactSpinner
+                .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                        TextView txt_email = (TextView) findViewById(R.id.email_address);
+                        txt_email.setText("An: " + contactList.get(position).getEmailAddress());
+                        Log.d(TAG, "Item selected" + position);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> arg0) {
+                        // TODO Auto-generated method stub
+                    }
+                });
     }
 
     static class ViewHolder{
