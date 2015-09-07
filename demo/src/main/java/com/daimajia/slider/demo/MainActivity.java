@@ -49,7 +49,6 @@ public class MainActivity extends Activity {
 	private static final String url = "http://dm141534.students.fhstp.ac.at/phototask_api/api/tasks";
 	private ProgressDialog pDialog;
 	private List<Task> taskList = new ArrayList<Task>();
-	private ArrayList<Picture> picList = new ArrayList<Picture>();
 	private ListView listView;
 	private CustomListAdapter adapter;
 

@@ -86,6 +86,7 @@ public class Slider_MainActivity extends Activity implements BaseSliderView.OnSl
 
         /* important adds Request */
         AppController.getInstance().addToRequestQueue(picRequest);
+
         //Slider erstellen
         mySlider.setPresetTransformer(SliderLayout.Transformer.Default);
         mySlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Top);

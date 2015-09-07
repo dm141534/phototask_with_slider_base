@@ -53,6 +53,7 @@ public class DetailView extends Activity {
     private ImageView imgPreview;
     private Button btnCapturePicture;
     private Button btnComments;
+    private Button btnMail;
 
     Task task = new Task();
     //Vorschaubild
@@ -75,6 +76,7 @@ public class DetailView extends Activity {
         imgPreview = (ImageView) findViewById(R.id.imgPreview);
         btnCapturePicture = (Button) findViewById(R.id.add_pics);
         btnComments = (Button) findViewById(R.id.comments);
+        btnMail = (Button) findViewById(R.id.send_mail);
         mNetworkImageView = (NetworkImageView) findViewById(R.id.preview_image);
 
         Intent i = getIntent();
@@ -99,6 +101,16 @@ public class DetailView extends Activity {
                 startActivity(i);
             }
         });
+
+        btnMail.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+                Intent i = new Intent(getApplicationContext(),Mail_Activity.class);
+                i.putExtra(EXTRA_MESSAGE,taskId);
+                startActivity(i);
+            }
+        });
+
 
         // Showing progress dialog before making http request
        pDialog.setMessage("Bild wird geladen...");
