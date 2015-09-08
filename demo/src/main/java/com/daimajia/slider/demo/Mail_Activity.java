@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.CheckBoxPreference;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,9 +15,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -25,9 +28,9 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.daimajia.slider.demo.adater.CustomOnItemSelectedListener;
 import com.daimajia.slider.demo.adater.MyVolleySingleton;
 import com.daimajia.slider.demo.model.Contact;
+import com.daimajia.slider.demo.model.Mail;
 import com.daimajia.slider.demo.model.Picture;
 import com.daimajia.slider.demo.util.Config;
 import org.json.JSONArray;
@@ -37,7 +40,7 @@ import java.util.ArrayList;
 
 
 
-public class Mail_Activity extends Activity implements AdapterView.OnItemSelectedListener {
+public class Mail_Activity extends Activity  {
 
     ImageLoader myImageLoader;
     NetworkImageView myNetworkImageView;
@@ -45,25 +48,15 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
     private ArrayList<String> Thumblink_Array = new ArrayList<String>();
     private ArrayList<Contact> contactList = new ArrayList<Contact>();
     ArrayList<String> nameList = new ArrayList<String>();
-
     private Button sendBtn;
-
     String url_pics = Config.PICS_BY_ID_URL;
-
-   /*   @Override
-  protected void onStart() {
-        super.onStart();
-
-        //SPINNNER
-        //AddSpinnerToView();
-        Spinner contactSpinner = (Spinner) findViewById(R.id.address_spinner);
-        contactSpinner.setOnItemSelectedListener(this);
-
-        contactSpinner = (Spinner) findViewById(R.id.address_spinner);
-        contactSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, nameList));
+    TextView txtemail, betreff, message;
+    GridView gridview;
+    CheckBox mycheckBox;
+    //files Array für Json
+    public ArrayList<String> fileList = new ArrayList<String>();
 
 
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +66,17 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
         sendBtn = (Button) findViewById(R.id.button_send_mail);
         myImageLoader = MyVolleySingleton.getInstance(this).getImageLoader();
         final GridView gridView = (GridView) findViewById(R.id.gridView);
-        gridView.setAdapter(new MyImageAdapter());
 
+        gridView.setAdapter(new MyImageAdapter());
+        //Handler für Spinner, da sonst die DropDownList nicht mehr existiert
         Handler spinnerHandler = new Handler();
 
+        //Für EMAIL
+        txtemail = (TextView) findViewById(R.id.email_address);
+        betreff = (TextView) findViewById(R.id.email_about);
+        message = (TextView) findViewById(R.id.email_message);
+        gridview = (GridView) findViewById(R.id.gridView);
+       // mycheckBox = (CheckBox) findViewById(R.id.checkbox);
 
 
         JsonArrayRequest contactRequest = new JsonArrayRequest(Config.CONTACTS_URL, new Response.Listener<JSONArray>() {
@@ -97,7 +97,6 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
         }, new Response.ErrorListener() {
@@ -140,20 +139,8 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
         });
 
         AppController.getInstance().addToRequestQueue(picRequest);
-
+        //Spinner erstellen über Handler
         spinnerHandler.postDelayed(new AddContactSpinner(getApplicationContext(), nameList),1000 );
-
-       /* nameList.add("lost params");
-        nameList.add("new param");
-        nameList.add("free hugs");*/
-
-
-       /* Spinner contactSpinner = (Spinner) findViewById(R.id.address_spinner);
-        contactSpinner.setOnItemSelectedListener(this);
-        contactSpinner = (Spinner) findViewById(R.id.address_spinner);
-        contactSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, nameList));*/
-
-
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -161,30 +148,32 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
                 //ausgewählte Bilder anzeigen
                 GridView pictureGridView = (GridView) findViewById(R.id.gridView);
                 Log.d(TAG, "Send Button gedrückt");
+
+                Mail myMail = new Mail();
+                myMail.setReceiver(txtemail.getText().toString());
+                myMail.setBetreff(betreff.getText().toString());
+                myMail.setText(message.getText().toString());
+
+                myMail.setFiles(fileList);
+
+                Log.d(TAG, myMail.getText().toString());
+                Log.d(TAG, myMail.getBetreff().toString());
+                Log.d(TAG, myMail.getReceiver().toString());
+                Log.d(TAG,fileList.toString());
+
+                //jetz alle Pics mit wo die checkbox gesetzt ist
+                // zuerst checkbox automatisch setzen, wenn man auf das Bild klickt
+
+
             }
         });
 
-    }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View v, int position,
-                               long id) {
-        // TODO Auto-generated method stub
-        Log.d(TAG, "fired !!");
-        Toast.makeText(parent.getContext(),
-                "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                Toast.LENGTH_SHORT).show();
-
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
     }
 
     static class ViewHolder {
         ImageView imageView;
+        CheckBox checkBoxView;
     }
 
     class MyImageAdapter extends BaseAdapter {
@@ -202,12 +191,11 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
 
         @Override
         public long getItemId(int position) {
-            Log.d(TAG, "position" + position);
             return position;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             View view = convertView;
             final ViewHolder gridViewImageHolder;
@@ -216,8 +204,10 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
                 view = getLayoutInflater().inflate(R.layout.gridview_mail, parent, false);
                 gridViewImageHolder = new ViewHolder();
                 gridViewImageHolder.imageView = (ImageView) view.findViewById(R.id.networkImageView);
+                gridViewImageHolder.checkBoxView = (CheckBox) view.findViewById(R.id.checkbox);
                 view.setTag(gridViewImageHolder);
             } else {
+
                 gridViewImageHolder = (ViewHolder) view.getTag();
             }
             myNetworkImageView = (NetworkImageView) gridViewImageHolder.imageView;
@@ -225,24 +215,39 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
             myNetworkImageView.setErrorImageResId(R.drawable.house);
             myNetworkImageView.setAdjustViewBounds(true);
             myNetworkImageView.setImageUrl(Thumblink_Array.get(position), myImageLoader);
+            myNetworkImageView.setId(position);
+
+            //mycheckBox = (CheckBox) gridViewImageHolder.checkBoxView;
+            //mycheckBox.setChecked(true);
+
+
+
+            myNetworkImageView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    //  OnItemClicklistener für GRIDVIEW
+
+                    //mycheckBox.setChecked(false);
+                    Log.d(TAG, "Item Clicked: " + Thumblink_Array.get(position));
+                    fileList.add(Thumblink_Array.get(position).toString());
+
+
+                }
+            });
             return view;
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_mail_, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -257,7 +262,6 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
         private final ArrayList<String> nameList;
 
         public AddContactSpinner(Context mContext, ArrayList nameList){
-
             this.mContext = mContext;
             this.nameList = nameList;
         }
@@ -265,10 +269,25 @@ public class Mail_Activity extends Activity implements AdapterView.OnItemSelecte
         public void run(){
 
         final Spinner contactSpinner = (Spinner) findViewById(R.id.address_spinner);
+            contactSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, nameList));
+            contactSpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());}
+    }
+    public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
-        contactSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, nameList));
 
-        contactSpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());}
+
+        public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+            Toast.makeText(parent.getContext(),
+                    "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(),
+                    Toast.LENGTH_SHORT).show();
+
+            txtemail.setText( parent.getItemAtPosition(pos).toString());
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg0) {
+            // TODO Auto-generated method stub
+        }
 
     }
 }

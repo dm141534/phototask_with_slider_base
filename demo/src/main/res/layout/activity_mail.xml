@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Emailaddresse auswählen oder eingeben"
+        android:text="Emailaddresse auswählen"
         android:textSize="20dp"
         />
     <Spinner
@@ -44,7 +44,7 @@
 
 
     <EditText
-        android:id="@+id/email_messsage"
+        android:id="@+id/email_message"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:hint="Nachricht eingeben"/>
