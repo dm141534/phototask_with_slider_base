@@ -1,8 +1,10 @@
 package com.daimajia.slider.demo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,18 +25,19 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.daimajia.slider.demo.adater.CustomOnItemSelectedListener;
 import com.daimajia.slider.demo.adater.MyVolleySingleton;
 import com.daimajia.slider.demo.model.Contact;
 import com.daimajia.slider.demo.model.Picture;
 import com.daimajia.slider.demo.util.Config;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-public class Mail_Activity extends Activity {
+
+
+public class Mail_Activity extends Activity implements AdapterView.OnItemSelectedListener {
 
     ImageLoader myImageLoader;
     NetworkImageView myNetworkImageView;
@@ -43,15 +46,67 @@ public class Mail_Activity extends Activity {
     private ArrayList<Contact> contactList = new ArrayList<Contact>();
     ArrayList<String> nameList = new ArrayList<String>();
 
+    private Button sendBtn;
+
     String url_pics = Config.PICS_BY_ID_URL;
+
+   /*   @Override
+  protected void onStart() {
+        super.onStart();
+
+        //SPINNNER
+        //AddSpinnerToView();
+        Spinner contactSpinner = (Spinner) findViewById(R.id.address_spinner);
+        contactSpinner.setOnItemSelectedListener(this);
+
+        contactSpinner = (Spinner) findViewById(R.id.address_spinner);
+        contactSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, nameList));
+
+
+    }*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mail);
 
+        sendBtn = (Button) findViewById(R.id.button_send_mail);
         myImageLoader = MyVolleySingleton.getInstance(this).getImageLoader();
-            final GridView gridView = (GridView) findViewById(R.id.gridView);
-            gridView.setAdapter(new MyImageAdapter());
+        final GridView gridView = (GridView) findViewById(R.id.gridView);
+        gridView.setAdapter(new MyImageAdapter());
+
+        Handler spinnerHandler = new Handler();
+
+
+
+        JsonArrayRequest contactRequest = new JsonArrayRequest(Config.CONTACTS_URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject obj = response.getJSONObject(i);
+                        Contact con = new Contact();
+                        con.setSecondname(obj.getString("secondname"));
+                        con.setFirstname(obj.getString("firstname"));
+                        con.setCompany(obj.getString("company"));
+                        con.setEmailAddress(obj.getString("emailAddress"));
+                        contactList.add(con);
+                        nameList.add(con.getSecondname() + "  " + con.getFirstname());
+                        //Log.d(TAG, con.getSecondname());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+        AppController.getInstance().addToRequestQueue(contactRequest);
 
         //JSON REQUEST for PICS ARRAY
         Intent i = getIntent();
@@ -64,8 +119,7 @@ public class Mail_Activity extends Activity {
             @Override
             public void onResponse(JSONArray response) {
                 for (int i = 0; i < response.length(); i++) {
-                    try
-                    {
+                    try {
                         JSONObject obj = response.getJSONObject(i);
                         Picture pic = new Picture();
                         //THUMBLINK fehlt noch in API
@@ -73,8 +127,7 @@ public class Mail_Activity extends Activity {
                         pic.setPic_link("http://dm141534.students.fhstp.ac.at/phototask_api/" + obj.getString("pic_link"));
                         //Log.d(TAG, pic.getPic_link());
                         Thumblink_Array.add(pic.getPic_link());
-                    }
-                    catch(JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
@@ -88,57 +141,49 @@ public class Mail_Activity extends Activity {
 
         AppController.getInstance().addToRequestQueue(picRequest);
 
-        JsonArrayRequest contactRequest = new JsonArrayRequest(Config.CONTACTS_URL, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++) {
-                    try
-                    {
-                        JSONObject obj = response.getJSONObject(i);
-                        Contact con = new Contact();
-                        con.setSecondname(obj.getString("secondname"));
-                        con.setFirstname(obj.getString("firstname"));
-                        con.setCompany(obj.getString("company"));
-                        con.setEmailAddress(obj.getString("emailAddress"));
-                        contactList.add(con);
-                        nameList.add(con.getSecondname() + "  " + con.getFirstname());
-                        //Log.d(TAG, con.getSecondname());
-                    }
-                    catch(JSONException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
+        spinnerHandler.postDelayed(new AddContactSpinner(getApplicationContext(), nameList),1000 );
+
+       /* nameList.add("lost params");
+        nameList.add("new param");
+        nameList.add("free hugs");*/
+
+
+       /* Spinner contactSpinner = (Spinner) findViewById(R.id.address_spinner);
+        contactSpinner.setOnItemSelectedListener(this);
+        contactSpinner = (Spinner) findViewById(R.id.address_spinner);
+        contactSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, nameList));*/
+
+
+
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                //ausgewählte Bilder anzeigen
+                GridView pictureGridView = (GridView) findViewById(R.id.gridView);
+                Log.d(TAG, "Send Button gedrückt");
             }
         });
-        AppController.getInstance().addToRequestQueue(contactRequest);
-        //SPINNNER
-        Spinner contactSpinner = (Spinner) findViewById(R.id.address_spinner);
-        contactSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, nameList));
 
-        //Spinner onitemclclicked
-       contactSpinner
-                .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                    @Override
-                    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                        TextView txt_email = (TextView) findViewById(R.id.email_address);
-                        txt_email.setText("An: " + contactList.get(position).getEmailAddress());
-                        Log.d(TAG, "Item selected" + position);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> arg0) {
-                        // TODO Auto-generated method stub
-                    }
-                });
     }
 
-    static class ViewHolder{
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View v, int position,
+                               long id) {
+        // TODO Auto-generated method stub
+        Log.d(TAG, "fired !!");
+        Toast.makeText(parent.getContext(),
+                "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
+                Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+    }
+
+    static class ViewHolder {
         ImageView imageView;
     }
 
@@ -146,15 +191,20 @@ public class Mail_Activity extends Activity {
 
         @Override
         public int getCount() {
-            return Thumblink_Array.size();}
+            return Thumblink_Array.size();
+        }
 
         @Override
         public Object getItem(int position) {
-            return null;}
+
+            return null;
+        }
 
         @Override
         public long getItemId(int position) {
-            return position;}
+            Log.d(TAG, "position" + position);
+            return position;
+        }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -178,25 +228,48 @@ public class Mail_Activity extends Activity {
             return view;
         }
     }
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_mail_, menu);
-            return true;
-        }
 
     @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
-
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_mail_, menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public class AddContactSpinner implements Runnable {
+
+        private final Context mContext;
+        private final ArrayList<String> nameList;
+
+        public AddContactSpinner(Context mContext, ArrayList nameList){
+
+            this.mContext = mContext;
+            this.nameList = nameList;
+        }
+
+        public void run(){
+
+        final Spinner contactSpinner = (Spinner) findViewById(R.id.address_spinner);
+
+        contactSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, nameList));
+
+        contactSpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());}
+
+    }
+}
 

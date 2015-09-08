@@ -51,7 +51,8 @@
         </activity>
         <activity
             android:name=".Mail_Activity"
-            android:label="@string/title_activity_mail_" >
+            android:label="@string/title_activity_mail_"
+            android:windowSoftInputMode="stateHidden">
         </activity>
     </application>
 

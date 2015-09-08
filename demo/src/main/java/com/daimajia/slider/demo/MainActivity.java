@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
 				new Response.Listener<JSONArray>() {
 					@Override
 					public void onResponse(JSONArray response) {
-						Log.d(TAG, response.toString());
+						//Log.d(TAG, response.toString());
 						hidePDialog();
 
 						// Parsing json
@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
 								JSONObject preview_pic_obj = response.getJSONObject(i).getJSONObject("previewPic");
 								Picture preview_pic = new Picture();
 								preview_pic.setThumb_link(preview_pic_obj.getString("thumb_link"));
-								Log.d(TAG, preview_pic.getThumb_link().toString());
+								//Log.d(TAG, preview_pic.getThumb_link().toString());
 								task.setPreviewpic(preview_pic);
 
 								taskList.add(task);

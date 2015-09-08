@@ -29,6 +29,10 @@
         android:id="@+id/address_spinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:spinnerMode="dropdown"
+        android:drawSelectorOnTop="true"
+        android:prompt="@string/spinner_title"
         />
 
     <EditText
