@@ -145,10 +145,7 @@ public class Mail_Activity extends Activity  {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                //ausgewählte Bilder anzeigen
-                GridView pictureGridView = (GridView) findViewById(R.id.gridView);
-                Log.d(TAG, "Send Button gedrückt");
-
+                //Log.d(TAG, "Send Button gedrückt");
                 Mail myMail = new Mail();
                 myMail.setReceiver(txtemail.getText().toString());
                 myMail.setBetreff(betreff.getText().toString());
@@ -163,6 +160,12 @@ public class Mail_Activity extends Activity  {
 
                 //jetz alle Pics mit wo die checkbox gesetzt ist
                 // zuerst checkbox automatisch setzen, wenn man auf das Bild klickt
+
+                //jetz JSONPOST dann Toast und ab die Post
+                // vlt nur haken auf Bild setzen, wenn bild ausgewählt ist -
+                //checken ob Bild dabei ist oder nicht iein FLAG setzen
+
+                fileList.clear();
 
 
             }
@@ -230,9 +233,16 @@ public class Mail_Activity extends Activity  {
 
                     //mycheckBox.setChecked(false);
                     Log.d(TAG, "Item Clicked: " + Thumblink_Array.get(position));
-                    fileList.add(Thumblink_Array.get(position).toString());
 
+                    //fileList.add(Thumblink_Array.get(position).toString());
 
+                    //überprüfen ob Pic schon ausgewählt wurde
+                    if(fileList.contains(Thumblink_Array.get(position))){
+
+                        fileList.remove(position);
+                    }else{
+                        fileList.add(Thumblink_Array.get(position));
+                    }
                 }
             });
             return view;
@@ -273,9 +283,6 @@ public class Mail_Activity extends Activity  {
             contactSpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());}
     }
     public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-
-
-
         public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
             Toast.makeText(parent.getContext(),
                     "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(),
